@@ -76,10 +76,12 @@ div.option2 {
     background-color: coral;
 }
 
-/* #heat-map-image-1 {
-    max-width: 50%;
+#heat-map-image-1 {
+    max-width: 100%;
+    height: auto;
 }
 
 #heat-map-image-2 {
     max-width: 50%;
-} */
+    height: auto;
+}

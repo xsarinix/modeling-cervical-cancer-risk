@@ -42,9 +42,9 @@ function buildRawData() {
     d3.json(`/raw-data`, function(rawData) {
       console.log(rawData);
     });
-  }
+}
   
-function buildPatientData() {
+function buildPatientData(patientKey) {
   d3.select("#visualizations")
     .html("")
     .append("div")
@@ -54,37 +54,195 @@ function buildPatientData() {
     .append("select")
     .attr("id", "select-patient")
     .attr("onchange", "patientChanged(this.value)")
+  
+  // row 1
+  d3.select("#patient-data")
+    .html("")
+    .append("div")
+    .attr("id", "patient-data-row-1")
+    .attr("class", "row")
+  d3.select("#patient-data-row-1")
+    .append("div")
+    .attr("id", "age-col")
+    .attr("class", "card col-md-3")
+    .append("div")
+    .attr("class", "card-header")
+    .append("h5").text("Age")
+  d3.select("#patient-data-row-1")
+    .append("div")
+    .attr("id", "intercourse-col")
+    .attr("class", "card col-md-3")
+    .append("div")
+    .attr("class", "card-header")
+    .append("h5").text("Age Sexually Active")
+  d3.select("#patient-data-row-1")
+    .append("div")
+    .attr("id", "sex-partners-col")
+    .attr("class", "card col-md-3")
+    .append("div")
+    .attr("class", "card-header")
+    .append("h5").text("# of Sexual Partners")
+  d3.select("#patient-data-row-1")
+    .append("div")
+    .attr("id", "pregnancies-col")
+    .attr("class", "card col-md-3")
+    .append("div")
+    .attr("class", "card-header")
+    .append("h5").text("# of Pregnancies")
+
+  // row 2
+  d3.select("#patient-data")
+    .append("div")
+    .attr("id", "patient-data-row-2")
+    .attr("class", "row")
+  d3.select("#patient-data-row-2")
+    .append("div")
+    .attr("id", "smokes-col")
+    .attr("class", "card col-md-3")
+    .append("div")
+    .attr("class", "card-header")
+    .append("h5").text("Smokes")
+  d3.select("#patient-data-row-2")
+    .append("div")
+    .attr("id", "hbc-col")
+    .attr("class", "card col-md-3")
+    .append("div")
+    .attr("class", "card-header")
+    .append("h5").text("Birth Control")
+  d3.select("#patient-data-row-2")
+    .append("div")
+    .attr("id", "iud-col")
+    .attr("class", "card col-md-3")
+    .append("div")
+    .attr("class", "card-header")
+    .append("h5").text("IUD")
+  d3.select("#patient-data-row-2")
+    .append("div")
+    .attr("id", "std-col")
+    .attr("class", "card col-md-3")
+    .append("div")
+    .attr("class", "card-header")
+    .append("h5").text("STDs")
+
+  // enter data into row 1
+  d3.select("#meta-card")
+    .append("div")
+    .attr("class", "card-header")
+    .append("h4").text(`Patient ${patientKey}`)
+  d3.select("#meta-card")
+    .append("div")
+    .attr("class", "card-body")
   d3.json(`/patient-data`, function(patientData) {
     console.log(patientData);
-    console.log(Object.keys(patientData))
+    console.log(Object.keys(patientData));
     Object.keys(patientData).forEach(function(patientKey) {
     d3.select("#select-patient")
       .append("option")
       .attr("value", `${patientKey}`)
       .text(`Patient ${patientKey}`)
-    })
-  });
-  d3.select("#patient-data")
-    .append("div")
-    .attr("id", "patient-data-row-1")
-    .attr("class", "row")
-  console.log("Patient data build complete.")
-}
+    });
 
-function buildPatient(patientKey) {
-  // code to build the patient visualizations goes here
-  d3.select("#patient-data-row-1")
-    .html("")
-  d3.json(`/patient-data`, function(patientData) {
-    console.log(patientData[patientKey])
-    Object.entries(patientData[patientKey]).forEach(([key,value]) => {
-      d3.select("#patient-data-row-1")
-        .append("h6").html(`${key}: ${value}<br/>`)
-      // d3.select("#patient-data-row-1")
-      //   .append("br")
-    })
+    keys = Object.keys(patientData[patientKey])
+    entries = Object.entries(patientData[patientKey])
+    console.log(Object.entries(patientData[patientKey]))
+    console.log(keys[0])
+    console.log(entries[0][1]);
+
+    // age
+    d3.select("#age-col")
+      .append("h4")
+      .attr("class", "display-2")
+      .text(`${entries[0][1]}`)
+    // age at first intercourse
+    d3.select("#intercourse-col")
+      .append("h4")
+      .attr("class", "display-2")
+      .text(`${entries[7][1]}`)
+    // number of sexual partners
+    d3.select("#sex-partners-col")
+      .append("h4")
+      .attr("class", "display-2")
+      .text(`${entries[14][1]}`)
+    // number of pregnancies
+    d3.select("#pregnancies-col")
+      .append("h4")
+      .attr("class", "display-2")
+      .text(`${entries[13][1]}`)
+    
+    // enter data into row 2
+    // smokes?
+    if (entries[33][1] == 1) {
+      d3.select("#smokes-col")
+        .append("img")
+        .attr("class", "img-fluid")  
+        .attr("src", "../static/images/green-check.png")
+    }
+    else {
+      d3.select("#smokes-col")
+        .append("img")
+        .attr("class", "img-fluid")  
+        .attr("src", "../static/images/red-x.png")
+    }
+
+    // hormonal birth control?
+    if (entries[9][1] || entries[11][1] == 1) {
+      d3.select("#hbc-col")
+        .append("img")
+        .attr("class", "img-fluid")  
+        .attr("src", "../static/images/green-check.png")
+    }
+    else {
+      d3.select("#hbc-col")
+        .append("img")
+        .attr("class", "img-fluid")  
+        .attr("src", "../static/images/red-x.png")
+    }
+
+    // iud?
+    if (entries[11][1] == 1) {
+      d3.select("#iud-col")
+        .append("img")
+        .attr("class", "img-fluid")  
+        .attr("src", "../static/images/green-check.png")
+    }
+    else {
+      d3.select("#iud-col")
+        .append("img")
+        .attr("class", "img-fluid")  
+        .attr("src", "../static/images/red-x.png")
+    }
+
+    // stds?
+    if (entries[15][1] || entries[15][1] == 1) {
+      d3.select("#hbc-col")
+        .append("img")
+        .attr("class", "img-fluid")  
+        .attr("src", "../static/images/green-check.png")
+    }
+    else {
+      d3.select("#std-col")
+        .append("img")
+        .attr("class", "img-fluid")  
+        .attr("src", "../static/images/red-x.png")
+    }
+
+    // dx?
+    // if (entries[15][1] == 1) {
+    //   d3.select("#dx-col")
+    //     .append("img")
+    //     .attr("class", "img-fluid")  
+    //     .attr("src", "../static/images/green-check.png")
+    // }
+    // else {
+    //   d3.select("#std-col")
+    //     .append("img")
+    //     .attr("class", "img-fluid")  
+    //     .attr("src", "../static/images/red-x.png")
+    // }
+    
   });
-  console.log("Patient visuals built.")
+
+  console.log("Patient data build complete.")
 }
   
 function buildVisualizations() {
@@ -146,6 +304,19 @@ function buildVisualizations() {
     .attr("src", "../static/images/age-first-intercourse-histo.png")
     .attr("class", "img-fluid")
   d3.select("#intercourse-age-histo-row")
+    .append("h6")
+    .attr("class", "display-5")
+    .text("Age Became Sexually Active")
+  // append number of pregnancies histogram
+  d3.select("#histograms")
+    .append("div")
+    .attr("id", "number-of-pregnancies-histo-row")
+    .attr("class", "row")
+  d3.select("#number-of-pregnancies-histo-row")
+    .append("img")
+    .attr("src", "../static/images/number-of-pregnancies-histo.png")
+    .attr("class", "img-fluid")
+  d3.select("#number-of-pregnancies-histo-row")
     .append("h6")
     .attr("class", "display-5")
     .text("Age Became Sexually Active")
@@ -257,7 +428,7 @@ function buildVisual(visual) {
   }
   
   if (visual == "patientData") {
-    buildPatientData()
+    buildPatientData(firstPatient)
   }
 
   if (visual == "visualizations") {
@@ -285,7 +456,7 @@ function optionChanged(visual) {
 function patientChanged(newPatientKey) {
   // Fetch new data each time a new sample is selected
   console.log(`Patient changed: ${newPatientKey}`);
-  buildPatient(newPatientKey);
+  buildPatientData(newPatientKey);
 }
 
 // Initialize the dashboard
