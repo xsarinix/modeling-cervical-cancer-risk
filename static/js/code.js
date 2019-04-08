@@ -51,13 +51,22 @@ function buildPatientData(patientKey) {
     .attr("id", "patient-data")
     .attr("class", "container")
   d3.select("#patient-data")
+    .html("")
     .append("select")
     .attr("id", "select-patient")
     .attr("onchange", "patientChanged(this.value)")
-  
-  // row 1
+
+  // build patient title
   d3.select("#patient-data")
-    .html("")
+    .append("div")
+    .attr("id", "patient-number")
+    .attr("class", "container")
+    .append("h4")
+    .attr("class", "display-4")
+    .text(`Patient ${patientKey}`)
+  
+  // build row 1
+  d3.select("#patient-data")
     .append("div")
     .attr("id", "patient-data-row-1")
     .attr("class", "row")
@@ -90,7 +99,7 @@ function buildPatientData(patientKey) {
     .attr("class", "card-header")
     .append("h5").text("# of Pregnancies")
 
-  // row 2
+  // build row 2
   d3.select("#patient-data")
     .append("div")
     .attr("id", "patient-data-row-2")
@@ -124,6 +133,40 @@ function buildPatientData(patientKey) {
     .attr("class", "card-header")
     .append("h5").text("STDs")
 
+  // build row 3
+  d3.select("#patient-data")
+    .append("div")
+    .attr("id", "patient-data-row-3")
+    .attr("class", "row")
+  d3.select("#patient-data-row-3")
+    .append("div")
+    .attr("id", "diagnosis-col")
+    .attr("class", "card col-md-3")
+    .append("div")
+    .attr("class", "card-header")
+    .append("h5").text("Dx")
+  d3.select("#patient-data-row-3")
+    .append("div")
+    .attr("id", "cin-col")
+    .attr("class", "card col-md-3")
+    .append("div")
+    .attr("class", "card-header")
+    .append("h5").text("Cervical Dysplasia")
+  d3.select("#patient-data-row-3")
+    .append("div")
+    .attr("id", "hpv-col")
+    .attr("class", "card col-md-3")
+    .append("div")
+    .attr("class", "card-header")
+    .append("h5").text("HPV")
+  d3.select("#patient-data-row-3")
+    .append("div")
+    .attr("id", "cancer-col")
+    .attr("class", "card col-md-3")
+    .append("div")
+    .attr("class", "card-header")
+    .append("h5").text("Cancer")
+
   // enter data into row 1
   d3.select("#meta-card")
     .append("div")
@@ -136,17 +179,17 @@ function buildPatientData(patientKey) {
     console.log(patientData);
     console.log(Object.keys(patientData));
     Object.keys(patientData).forEach(function(patientKey) {
-    d3.select("#select-patient")
-      .append("option")
-      .attr("value", `${patientKey}`)
-      .text(`Patient ${patientKey}`)
+      d3.select("#select-patient")
+        .append("option")
+        .attr("value", `${patientKey}`)
+        .text(`Patient ${patientKey}`)
     });
 
     keys = Object.keys(patientData[patientKey])
     entries = Object.entries(patientData[patientKey])
     console.log(Object.entries(patientData[patientKey]))
-    console.log(keys[0])
-    console.log(entries[0][1]);
+    // console.log(keys[0])
+    // console.log(entries[0][1]);
 
     // age
     d3.select("#age-col")
@@ -185,7 +228,7 @@ function buildPatientData(patientKey) {
     }
 
     // hormonal birth control?
-    if (entries[9][1] || entries[11][1] == 1) {
+    if (entries[9][1] == 1) {
       d3.select("#hbc-col")
         .append("img")
         .attr("class", "img-fluid")  
@@ -213,8 +256,8 @@ function buildPatientData(patientKey) {
     }
 
     // stds?
-    if (entries[15][1] || entries[15][1] == 1) {
-      d3.select("#hbc-col")
+    if (entries[15][1] == 1) {
+      d3.select("#std-col")
         .append("img")
         .attr("class", "img-fluid")  
         .attr("src", "../static/images/green-check.png")
